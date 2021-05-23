@@ -33,7 +33,7 @@
         "type": "function",
         "z": "65fba47.022385c",
         "name": "",
-        "func": "let data = JSON.stringify(msg.payload);\ndata = data.substring(2, 33).split(\",\");\n\nconst readings = {};\n\nreadings.type = data[0];\nreadings.id = data[1];\nreadings.temperature = data[2];\nreadings.humidity = data[3];\nreadings.light = data[6];\n\nmsg.payload = readings;\nreturn msg;",
+        "func": "let data = JSON.stringify(msg.payload);\ndata = data.substring(2, 33).split(\",\");\n\nconst readings = {};\n\nreadings.type = data[0];\nreadings.id = data[1];\nreadings.temperature = data[2];\nreadings.humidity = data[3];\nreadings.light = data[6];\nreadings.timestamp = new Date();\n\nmsg.payload = readings;\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
@@ -43,7 +43,11 @@
         "y": 200,
         "wires": [
             [
-                "e9973617.b6f338"
+                "e9973617.b6f338",
+                "3eb2faff.a34d66",
+                "c88acec0.1cb22",
+                "1625af89.6e10a",
+                "dc9ef8a2.1068a8"
             ]
         ]
     },
@@ -109,8 +113,8 @@
         "complete": "false",
         "statusVal": "",
         "statusType": "auto",
-        "x": 362,
-        "y": 717,
+        "x": 315,
+        "y": 740,
         "wires": [],
         "l": false
     },
@@ -119,7 +123,7 @@
         "type": "function",
         "z": "65fba47.022385c",
         "name": "",
-        "func": "\nlet buff = Buffer.from(msg.payload.payload_raw, 'base64');\nlet text = buff.toString('hex');\n\nvar decoded = {};\ndecoded.deviceId = msg.payload.dev_id;\ndecoded.temperature = parseInt(text.substring(0,4), 16)/100;\ndecoded.humidity = parseInt(text.substring(4), 16)/100;\ndecoded.tt = convertUTCDateToLocalDate(new Date()).toLocaleString();\n\nmsg.payload = decoded;\n\nfunction convertUTCDateToLocalDate(date) {\n    var newDate = new Date(date.getTime()+date.getTimezoneOffset()*60*1000);\n\n    var offset = 3;\n    var hours = date.getHours();\n\n    newDate.setHours(hours + offset);\n\n    return newDate;   \n}\n\nreturn msg;",
+        "func": "\nlet buff = Buffer.from(msg.payload.payload_raw, 'base64');\nlet text = buff.toString('hex');\n\nvar decoded = {};\ndecoded.deviceId = msg.payload.dev_id;\ndecoded.temperature = parseInt(text.substring(0,4), 16)/100;\ndecoded.humidity = parseInt(text.substring(4), 16)/100;\ndecoded.tt = new Date().toLocaleString();\n\nmsg.payload = decoded;\n\nfunction convertUTCDateToLocalDate(date) {\n    var newDate = new Date(date.getTime()+date.getTimezoneOffset()*60*1000);\n\n    var offset = 2;\n    var hours = date.getHours();\n\n    newDate.setHours(hours + offset);\n\n    return newDate;   \n}\n\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
@@ -157,8 +161,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 502.5,
-        "y": 530,
+        "x": 480,
+        "y": 660,
         "wires": [
             [
                 "28cd58e3.78eab8",
@@ -185,8 +189,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 481.5,
-        "y": 646,
+        "x": 480,
+        "y": 740,
         "wires": [
             [
                 "7bc8abba.d9f3a4",
@@ -230,8 +234,8 @@
             "#c5b0d5"
         ],
         "outputs": 1,
-        "x": 697.5,
-        "y": 613,
+        "x": 715,
+        "y": 680,
         "wires": [
             []
         ],
@@ -259,8 +263,8 @@
         ],
         "seg1": "",
         "seg2": "",
-        "x": 716.5,
-        "y": 560,
+        "x": 750,
+        "y": 620,
         "wires": []
     },
     {
@@ -285,8 +289,8 @@
         ],
         "seg1": "",
         "seg2": "",
-        "x": 728.5,
-        "y": 665,
+        "x": 740,
+        "y": 720,
         "wires": []
     },
     {
@@ -325,8 +329,8 @@
             "#c5b0d5"
         ],
         "outputs": 1,
-        "x": 784.5,
-        "y": 711,
+        "x": 715,
+        "y": 780,
         "wires": [
             []
         ],
@@ -344,8 +348,8 @@
         "label": "Last Seen : ",
         "format": "{{msg.payload}}",
         "layout": "col-center",
-        "x": 693.5,
-        "y": 477,
+        "x": 760,
+        "y": 580,
         "wires": []
     },
     {
@@ -367,8 +371,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 453.5,
-        "y": 477,
+        "x": 480,
+        "y": 580,
         "wires": [
             [
                 "5667e2fa.6a4b5c"
@@ -389,9 +393,371 @@
         "correl": "",
         "expiry": "",
         "broker": "d3469e9d.9cd29",
-        "x": 480,
-        "y": 740,
+        "x": 380,
+        "y": 820,
         "wires": []
+    },
+    {
+        "id": "3eb2faff.a34d66",
+        "type": "change",
+        "z": "65fba47.022385c",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload.temperature",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 480,
+        "y": 320,
+        "wires": [
+            [
+                "d38f7cef.17d68",
+                "6c705335.23c85c"
+            ]
+        ]
+    },
+    {
+        "id": "c88acec0.1cb22",
+        "type": "change",
+        "z": "65fba47.022385c",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload.humidity",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 479,
+        "y": 416,
+        "wires": [
+            [
+                "f1ab749c.b65d98",
+                "86691749.13b308"
+            ]
+        ]
+    },
+    {
+        "id": "6c705335.23c85c",
+        "type": "ui_chart",
+        "z": "65fba47.022385c",
+        "name": "Temperature History",
+        "group": "98a33871.614b08",
+        "order": 4,
+        "width": 0,
+        "height": 0,
+        "label": "Temperature History",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "bezier",
+        "nodata": "Temperature History",
+        "dot": false,
+        "ymin": "",
+        "ymax": "",
+        "removeOlder": "24",
+        "removeOlderPoints": "",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "x": 735,
+        "y": 380,
+        "wires": [
+            []
+        ],
+        "l": false
+    },
+    {
+        "id": "d38f7cef.17d68",
+        "type": "ui_gauge",
+        "z": "65fba47.022385c",
+        "name": "",
+        "group": "98a33871.614b08",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "Temperature",
+        "label": "Celsius",
+        "format": "{{value}}",
+        "min": "12",
+        "max": "40",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "x": 750,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "f1ab749c.b65d98",
+        "type": "ui_gauge",
+        "z": "65fba47.022385c",
+        "name": "",
+        "group": "15f5f420.7cbd9c",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "Humidity",
+        "label": "%",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "100",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "x": 740,
+        "y": 420,
+        "wires": []
+    },
+    {
+        "id": "86691749.13b308",
+        "type": "ui_chart",
+        "z": "65fba47.022385c",
+        "name": "Humidity History",
+        "group": "15f5f420.7cbd9c",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "label": "Humidity History",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "bezier",
+        "nodata": "Humidity History",
+        "dot": false,
+        "ymin": "",
+        "ymax": "",
+        "removeOlder": "24",
+        "removeOlderPoints": "",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "x": 735,
+        "y": 460,
+        "wires": [
+            []
+        ],
+        "l": false
+    },
+    {
+        "id": "e252ce4f.3170a",
+        "type": "ui_text",
+        "z": "65fba47.022385c",
+        "group": "d8227210.17f3",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Timestamp",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "x": 750,
+        "y": 260,
+        "wires": []
+    },
+    {
+        "id": "2e6c7261.3bcd0e",
+        "type": "change",
+        "z": "65fba47.022385c",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload.humidity",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 480,
+        "y": 260,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "1625af89.6e10a",
+        "type": "change",
+        "z": "65fba47.022385c",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload.timestamp",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 480,
+        "y": 260,
+        "wires": [
+            [
+                "e252ce4f.3170a"
+            ]
+        ]
+    },
+    {
+        "id": "dc9ef8a2.1068a8",
+        "type": "change",
+        "z": "65fba47.022385c",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload.light",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 480,
+        "y": 500,
+        "wires": [
+            [
+                "d69fa8a7.1c3908",
+                "9c70832d.473bb"
+            ]
+        ]
+    },
+    {
+        "id": "d69fa8a7.1c3908",
+        "type": "ui_gauge",
+        "z": "65fba47.022385c",
+        "name": "",
+        "group": "f3b16afd.dc0f08",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "Light",
+        "label": "%",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "100",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "x": 731,
+        "y": 504,
+        "wires": []
+    },
+    {
+        "id": "9c70832d.473bb",
+        "type": "ui_chart",
+        "z": "65fba47.022385c",
+        "name": "Humidity History",
+        "group": "f3b16afd.dc0f08",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "label": "Humidity History",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "bezier",
+        "nodata": "Humidity History",
+        "dot": false,
+        "ymin": "",
+        "ymax": "",
+        "removeOlder": "24",
+        "removeOlderPoints": "",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "x": 736,
+        "y": 544,
+        "wires": [
+            []
+        ],
+        "l": false
     },
     {
         "id": "d3469e9d.9cd29",
@@ -449,11 +815,59 @@
         "collapse": false
     },
     {
+        "id": "98a33871.614b08",
+        "type": "ui_group",
+        "name": "Temperature",
+        "tab": "b597fbd1.941658",
+        "order": 2,
+        "disp": true,
+        "width": "6",
+        "collapse": false
+    },
+    {
+        "id": "15f5f420.7cbd9c",
+        "type": "ui_group",
+        "name": "Humidity",
+        "tab": "b597fbd1.941658",
+        "order": 3,
+        "disp": true,
+        "width": "6",
+        "collapse": false
+    },
+    {
+        "id": "d8227210.17f3",
+        "type": "ui_group",
+        "name": "Default",
+        "tab": "b597fbd1.941658",
+        "order": 1,
+        "disp": true,
+        "width": "6",
+        "collapse": false
+    },
+    {
+        "id": "f3b16afd.dc0f08",
+        "type": "ui_group",
+        "name": "Light",
+        "tab": "b597fbd1.941658",
+        "order": 4,
+        "disp": true,
+        "width": "6",
+        "collapse": false
+    },
+    {
         "id": "3e9d804d.64c82",
         "type": "ui_tab",
         "name": "Smart Home",
         "icon": "dashboard",
         "order": 3,
+        "disabled": false,
+        "hidden": false
+    },
+    {
+        "id": "b597fbd1.941658",
+        "type": "ui_tab",
+        "name": "Home",
+        "icon": "dashboard",
         "disabled": false,
         "hidden": false
     }
