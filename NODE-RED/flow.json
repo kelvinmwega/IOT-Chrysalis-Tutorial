@@ -1,93 +1,460 @@
 [
-   {
-       "id": "b05d1d2e.14297",
-       "type": "http in",
-       "z": "65fba47.022385c",
-       "name": "/clients/wifi",
-       "url": "/clients/wifi",
-       "method": "post",
-       "upload": false,
-       "swaggerDoc": "",
-       "x": 120,
-       "y": 120,
-       "wires": [
-           [
-               "8494c93.ca3ec38",
-               "ea0e4ea4.4a77d"
-           ]
-       ]
-   },
-   {
-       "id": "8494c93.ca3ec38",
-       "type": "http response",
-       "z": "65fba47.022385c",
-       "name": "",
-       "statusCode": "",
-       "headers": {},
-       "x": 440,
-       "y": 120,
-       "wires": []
-   },
-   {
-       "id": "ea0e4ea4.4a77d",
-       "type": "function",
-       "z": "65fba47.022385c",
-       "name": "",
-       "func": "let data = JSON.stringify(msg.payload);\ndata = data.substring(2, 33).split(\",\");\n\nconst readings = {};\n\nreadings.type = data[0];\nreadings.id = data[1];\nreadings.temperature = data[2];\nreadings.humidity = data[3];\nreadings.light = data[6];\n\nmsg.payload = readings;\nreturn msg;",
-       "outputs": 1,
-       "noerr": 0,
-       "initialize": "",
-       "finalize": "",
-       "libs": [],
-       "x": 300,
-       "y": 200,
-       "wires": [
-           [
-               "e9973617.b6f338"
-           ]
-       ]
-   },
-   {
-       "id": "e9973617.b6f338",
-       "type": "mqtt out",
-       "z": "65fba47.022385c",
-       "name": "/clients/wifi/emd",
-       "topic": "/clients/wifi/emd",
-       "qos": "2",
-       "retain": "false",
-       "respTopic": "",
-       "contentType": "",
-       "userProps": "",
-       "correl": "",
-       "expiry": "",
-       "broker": "d3469e9d.9cd29",
-       "x": 690,
-       "y": 200,
-       "wires": []
-   },
-   {
-       "id": "d3469e9d.9cd29",
-       "type": "mqtt-broker",
-       "name": "",
-       "broker": "localhost",
-       "port": "1883",
-       "clientid": "",
-       "usetls": false,
-       "protocolVersion": "4",
-       "keepalive": "60",
-       "cleansession": true,
-       "birthTopic": "",
-       "birthQos": "0",
-       "birthPayload": "",
-       "birthMsg": {},
-       "closeTopic": "",
-       "closeQos": "0",
-       "closePayload": "",
-       "closeMsg": {},
-       "willTopic": "",
-       "willQos": "0",
-       "willPayload": "",
-       "willMsg": {},
-       "sessionExpiry": ""
-   }
+    {
+        "id": "b05d1d2e.14297",
+        "type": "http in",
+        "z": "65fba47.022385c",
+        "name": "/clients/wifi",
+        "url": "/clients/wifi",
+        "method": "post",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 120,
+        "y": 120,
+        "wires": [
+            [
+                "8494c93.ca3ec38",
+                "ea0e4ea4.4a77d"
+            ]
+        ]
+    },
+    {
+        "id": "8494c93.ca3ec38",
+        "type": "http response",
+        "z": "65fba47.022385c",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 440,
+        "y": 120,
+        "wires": []
+    },
+    {
+        "id": "ea0e4ea4.4a77d",
+        "type": "function",
+        "z": "65fba47.022385c",
+        "name": "",
+        "func": "let data = JSON.stringify(msg.payload);\ndata = data.substring(2, 33).split(\",\");\n\nconst readings = {};\n\nreadings.type = data[0];\nreadings.id = data[1];\nreadings.temperature = data[2];\nreadings.humidity = data[3];\nreadings.light = data[6];\n\nmsg.payload = readings;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 300,
+        "y": 200,
+        "wires": [
+            [
+                "e9973617.b6f338"
+            ]
+        ]
+    },
+    {
+        "id": "e9973617.b6f338",
+        "type": "mqtt out",
+        "z": "65fba47.022385c",
+        "name": "/clients/wifi/emd",
+        "topic": "/clients/wifi/emd",
+        "qos": "2",
+        "retain": "false",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "d3469e9d.9cd29",
+        "x": 690,
+        "y": 200,
+        "wires": []
+    },
+    {
+        "id": "c033b945.61cde8",
+        "type": "http in",
+        "z": "65fba47.022385c",
+        "name": "/clients/lora",
+        "url": "/clients/lora",
+        "method": "post",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 95,
+        "y": 600,
+        "wires": [
+            [
+                "903bd40e.4da9e8",
+                "5556d62d.110708",
+                "4ccfdf4c.d5a19"
+            ]
+        ],
+        "l": false
+    },
+    {
+        "id": "903bd40e.4da9e8",
+        "type": "http response",
+        "z": "65fba47.022385c",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 301,
+        "y": 600,
+        "wires": [],
+        "l": false
+    },
+    {
+        "id": "5556d62d.110708",
+        "type": "debug",
+        "z": "65fba47.022385c",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 362,
+        "y": 717,
+        "wires": [],
+        "l": false
+    },
+    {
+        "id": "4ccfdf4c.d5a19",
+        "type": "function",
+        "z": "65fba47.022385c",
+        "name": "",
+        "func": "\nlet buff = Buffer.from(msg.payload.payload_raw, 'base64');\nlet text = buff.toString('hex');\n\nvar decoded = {};\ndecoded.deviceId = msg.payload.dev_id;\ndecoded.temperature = parseInt(text.substring(0,4), 16)/100;\ndecoded.humidity = parseInt(text.substring(4), 16)/100;\ndecoded.tt = convertUTCDateToLocalDate(new Date()).toLocaleString();\n\nmsg.payload = decoded;\n\nfunction convertUTCDateToLocalDate(date) {\n    var newDate = new Date(date.getTime()+date.getTimezoneOffset()*60*1000);\n\n    var offset = 3;\n    var hours = date.getHours();\n\n    newDate.setHours(hours + offset);\n\n    return newDate;   \n}\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 282,
+        "y": 642,
+        "wires": [
+            [
+                "5556d62d.110708",
+                "5d0ea071.e01ea",
+                "d7b2d60c.6cd6d8",
+                "40b97b7b.7750c4",
+                "c789794a.72d278"
+            ]
+        ],
+        "l": false
+    },
+    {
+        "id": "5d0ea071.e01ea",
+        "type": "change",
+        "z": "65fba47.022385c",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload.temperature",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 502.5,
+        "y": 530,
+        "wires": [
+            [
+                "28cd58e3.78eab8",
+                "8e2f7e09.986ab"
+            ]
+        ]
+    },
+    {
+        "id": "d7b2d60c.6cd6d8",
+        "type": "change",
+        "z": "65fba47.022385c",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload.humidity",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 481.5,
+        "y": 646,
+        "wires": [
+            [
+                "7bc8abba.d9f3a4",
+                "7943caa.1c38934"
+            ]
+        ]
+    },
+    {
+        "id": "8e2f7e09.986ab",
+        "type": "ui_chart",
+        "z": "65fba47.022385c",
+        "name": "Temperature History",
+        "group": "febe0dc5.dccf6",
+        "order": 4,
+        "width": 0,
+        "height": 0,
+        "label": "Temperature History",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "bezier",
+        "nodata": "Temperature History",
+        "dot": false,
+        "ymin": "",
+        "ymax": "",
+        "removeOlder": "24",
+        "removeOlderPoints": "",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "x": 697.5,
+        "y": 613,
+        "wires": [
+            []
+        ],
+        "l": false
+    },
+    {
+        "id": "28cd58e3.78eab8",
+        "type": "ui_gauge",
+        "z": "65fba47.022385c",
+        "name": "",
+        "group": "febe0dc5.dccf6",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "Temperature",
+        "label": "Celsius",
+        "format": "{{value}}",
+        "min": "12",
+        "max": "40",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "x": 716.5,
+        "y": 560,
+        "wires": []
+    },
+    {
+        "id": "7bc8abba.d9f3a4",
+        "type": "ui_gauge",
+        "z": "65fba47.022385c",
+        "name": "",
+        "group": "25c554e.e1739ac",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "Humidity",
+        "label": "%",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "100",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "x": 728.5,
+        "y": 665,
+        "wires": []
+    },
+    {
+        "id": "7943caa.1c38934",
+        "type": "ui_chart",
+        "z": "65fba47.022385c",
+        "name": "Humidity History",
+        "group": "25c554e.e1739ac",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "label": "Humidity History",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "bezier",
+        "nodata": "Humidity History",
+        "dot": false,
+        "ymin": "",
+        "ymax": "",
+        "removeOlder": "24",
+        "removeOlderPoints": "",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "x": 784.5,
+        "y": 711,
+        "wires": [
+            []
+        ],
+        "l": false
+    },
+    {
+        "id": "5667e2fa.6a4b5c",
+        "type": "ui_text",
+        "z": "65fba47.022385c",
+        "group": "c0f56de6.4053b",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "name": "EMD Last Seen",
+        "label": "Last Seen : ",
+        "format": "{{msg.payload}}",
+        "layout": "col-center",
+        "x": 693.5,
+        "y": 477,
+        "wires": []
+    },
+    {
+        "id": "40b97b7b.7750c4",
+        "type": "change",
+        "z": "65fba47.022385c",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload.tt",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 453.5,
+        "y": 477,
+        "wires": [
+            [
+                "5667e2fa.6a4b5c"
+            ]
+        ]
+    },
+    {
+        "id": "c789794a.72d278",
+        "type": "mqtt out",
+        "z": "65fba47.022385c",
+        "name": "/clients/lora/emd",
+        "topic": "/clients/wifi/emd",
+        "qos": "2",
+        "retain": "false",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "d3469e9d.9cd29",
+        "x": 480,
+        "y": 740,
+        "wires": []
+    },
+    {
+        "id": "d3469e9d.9cd29",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "localhost",
+        "port": "1883",
+        "clientid": "",
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "willMsg": {},
+        "sessionExpiry": ""
+    },
+    {
+        "id": "febe0dc5.dccf6",
+        "type": "ui_group",
+        "name": "Temperature",
+        "tab": "3e9d804d.64c82",
+        "order": 1,
+        "disp": true,
+        "width": "6",
+        "collapse": false
+    },
+    {
+        "id": "25c554e.e1739ac",
+        "type": "ui_group",
+        "name": "Humidity",
+        "tab": "3e9d804d.64c82",
+        "order": 3,
+        "disp": true,
+        "width": "6",
+        "collapse": false
+    },
+    {
+        "id": "c0f56de6.4053b",
+        "type": "ui_group",
+        "name": "CONTROLLER",
+        "tab": "3e9d804d.64c82",
+        "order": 2,
+        "disp": true,
+        "width": "6",
+        "collapse": false
+    },
+    {
+        "id": "3e9d804d.64c82",
+        "type": "ui_tab",
+        "name": "Smart Home",
+        "icon": "dashboard",
+        "order": 3,
+        "disabled": false,
+        "hidden": false
+    }
 ]
