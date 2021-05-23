@@ -1,0 +1,93 @@
+[
+   {
+       "id": "b05d1d2e.14297",
+       "type": "http in",
+       "z": "65fba47.022385c",
+       "name": "/clients/wifi",
+       "url": "/clients/wifi",
+       "method": "post",
+       "upload": false,
+       "swaggerDoc": "",
+       "x": 120,
+       "y": 120,
+       "wires": [
+           [
+               "8494c93.ca3ec38",
+               "ea0e4ea4.4a77d"
+           ]
+       ]
+   },
+   {
+       "id": "8494c93.ca3ec38",
+       "type": "http response",
+       "z": "65fba47.022385c",
+       "name": "",
+       "statusCode": "",
+       "headers": {},
+       "x": 440,
+       "y": 120,
+       "wires": []
+   },
+   {
+       "id": "ea0e4ea4.4a77d",
+       "type": "function",
+       "z": "65fba47.022385c",
+       "name": "",
+       "func": "let data = JSON.stringify(msg.payload);\ndata = data.substring(2, 33).split(\",\");\n\nconst readings = {};\n\nreadings.type = data[0];\nreadings.id = data[1];\nreadings.temperature = data[2];\nreadings.humidity = data[3];\nreadings.light = data[6];\n\nmsg.payload = readings;\nreturn msg;",
+       "outputs": 1,
+       "noerr": 0,
+       "initialize": "",
+       "finalize": "",
+       "libs": [],
+       "x": 300,
+       "y": 200,
+       "wires": [
+           [
+               "e9973617.b6f338"
+           ]
+       ]
+   },
+   {
+       "id": "e9973617.b6f338",
+       "type": "mqtt out",
+       "z": "65fba47.022385c",
+       "name": "/clients/wifi/emd",
+       "topic": "/clients/wifi/emd",
+       "qos": "2",
+       "retain": "false",
+       "respTopic": "",
+       "contentType": "",
+       "userProps": "",
+       "correl": "",
+       "expiry": "",
+       "broker": "d3469e9d.9cd29",
+       "x": 690,
+       "y": 200,
+       "wires": []
+   },
+   {
+       "id": "d3469e9d.9cd29",
+       "type": "mqtt-broker",
+       "name": "",
+       "broker": "localhost",
+       "port": "1883",
+       "clientid": "",
+       "usetls": false,
+       "protocolVersion": "4",
+       "keepalive": "60",
+       "cleansession": true,
+       "birthTopic": "",
+       "birthQos": "0",
+       "birthPayload": "",
+       "birthMsg": {},
+       "closeTopic": "",
+       "closeQos": "0",
+       "closePayload": "",
+       "closeMsg": {},
+       "willTopic": "",
+       "willQos": "0",
+       "willPayload": "",
+       "willMsg": {},
+       "sessionExpiry": ""
+   }
+]
